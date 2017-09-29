@@ -10,6 +10,10 @@
 #define PCConstantsConfig_h
 
 // 系统版本
+// iOS 8以下
+#define isBeforeiOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
+// iOS 8以上
+#define isLateriOS8  ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 // iOS 9以下
 #define isBeforeiOS9 ([[[UIDevice currentDevice] systemVersion] floatValue] <= 9.0)
 // iOS 9以上
@@ -79,11 +83,17 @@
 // 16进制颜色设置
 #define HEXCOLOR(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
 
-// 存储路径
+// 本地化存储相关
 // 账号信息存储地址
-#define kAccountFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"account.data"]
+#define kAccountFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"userAccount.data"]
 // 个人信息存储地址
-#define kUserInfoFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"user.data"]
+#define kUserInfoFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"userInfo.data"]
+// 是否开启指纹key
+#define kFingerprintVerifyKey @"fingerprintVerifyIsOn"
+// App 版本号存储key
+#define kAppVersionKey @"appVersion"
+// 进入后台时间记录key
+#define kEnterBackgroundTimeKey @"enterBackgroundTime"
 
 // 第三方服务账号信息相关
 // 极光
