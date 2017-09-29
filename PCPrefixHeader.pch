@@ -1,0 +1,27 @@
+//
+//  PCPrefixHeader.pch
+//  Pincai
+//
+//  Created by pincai on 2017/9/19.
+//  Copyright © 2017年 Pincai. All rights reserved.
+//
+
+#ifndef PCPrefixHeader_pch
+#define PCPrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "PCConstantsConfig.h"
+#import "NSString+PCString.h"
+#import "UIButton+PCButton.h"
+#import "UIFont+PCFont.h"
+#import "UIImage+PCImage.h"
+#import "UIView+PCView.h"
+#import "UIView+PCPosition.h"
+#import "UINavigationBar+PCNavBar.h"
+
+#import "AppDelegate.h"
+
+
+#endif /* PCPrefixHeader_pch */
