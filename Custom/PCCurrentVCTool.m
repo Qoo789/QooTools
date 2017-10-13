@@ -64,18 +64,27 @@
             context.localizedFallbackTitle = @"";
             context.localizedCancelTitle = @"取消";
             
+            // 调用系统 API 检查 Touch ID 是否可用
             NSError *requestError;
-            // 检查Touch ID是否可用
-            if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&requestError]) {
-                NSLog(@"Touch ID可以使用, 开始验证");
+            NSInteger policy;
+            if (isLateriOS8 && isBeforeiOS9) {
+                policy = LAPolicyDeviceOwnerAuthenticationWithBiometrics;
+            } else {
+                policy = LAPolicyDeviceOwnerAuthentication;
+            }
+            
+            if ([context canEvaluatePolicy:policy error:&requestError]) { // 系统方法验证, 设备支持
                 
-                [context evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"请验证已有指纹" reply:^(BOOL success, NSError * _Nullable error) {
+                NSLog(@"Touch ID可以使用, 开始验证");
+                // policy 这里 传 LAPolicyDeviceOwnerAuthentication 代表多次验证失败之后会自动跳转输入系统解锁密码的页面, 通过输入系统密码来解锁
+                // 传 LAPolicyDeviceOwnerAuthenticationWithBiometrics 代表多次验证失败之后的事件由我们自己来做, 所以一般框架就会第一遍先传 LAPolicyDeviceOwnerAuthenticationWithBiometrics, 多次验证失败之后传 LAPolicyDeviceOwnerAuthentication 再调用一次, 这样就是一开始三次验证失败之后弹框提醒, 再次验证失败就需要输入系统密码.
+                // 所以 policy 这里直接传 LAPolicyDeviceOwnerAuthenticationWithBiometrics
+                [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:@"请验证已有指纹" reply:^(BOOL success, NSError * _Nullable error) {
                     if (success) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             reply(success, nil);
                         });
                     } else {
-                        
                         dispatch_async(dispatch_get_main_queue(), ^{
                             switch (error.code) {
 //                                case LAErrorUserCancel:
@@ -101,6 +110,12 @@
                                     NSLog(@"当前设备没有注册 Touch ID");
                                     SHOWERRORHUD(@"当前设备没有注册 Touch ID");
                                     break;
+                                case LAErrorTouchIDLockout:
+                                    // 多次指纹验证不成功, Touch ID 被锁定
+                                    NSLog(@"Touch ID 被锁定");
+                                    // 这里我们并不需要调用系统密码输入, 所以这里不再再次调用
+//                                    [context evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:@"请验证已有指纹" reply:^(BOOL success, NSError * _Nullable error) {}];
+                                    break;
                                 default:
                                     break;
                             }
@@ -108,7 +123,7 @@
                         });
                     }
                 }];
-            } else {
+            } else { // 系统方法验证, 设备是不支持 TouchID 的
                 NSLog(@"模拟器, 不能使用 Touch ID");
             }
         } else { // 系统版本低于8.0
