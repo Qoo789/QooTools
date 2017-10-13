@@ -99,18 +99,18 @@
 }
 
 - (BOOL)checkPassWord {
-    // 如果规则是6-20位数字和字母组成
-    NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$";
+    // 如果规则是6-16位数字和字母组成
+    NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([pred evaluateWithObject: self]) {
-        return YES ;
+        return YES;
     } else {
         return NO;
     }
 }
 
 - (BOOL)checkAuthCode {
-    NSString *regex = @"^(?![0-9]+$)[0-9]{4}$";
+    NSString *regex = @"^[0-9]{4}$";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([pred evaluateWithObject:self]) {
         return YES;
