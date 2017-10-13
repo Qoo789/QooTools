@@ -24,15 +24,19 @@
 #import "UIView+PCPosition.h"
 #import "UINavigationBar+PCNavBar.h"
 #import "PCCurrentVCTool.h"
-#import "PCHUDTool.h" // 好吧这个其实是对第三方的扩展=。= (我有强迫症
+#import "PCHUDTool.h" // 好吧这个其实是对 MBProgressHUD 第三方的扩展=。= (我有强迫症
 
 // 系统级别
 #import <LocalAuthentication/LocalAuthentication.h> // 指纹验证
 
 // 第三方
+#import "MJRefresh.h"
 
 // 第三方(通过CocoaPods导入的, 都用<>)
-#import <TTTAttributedLabel/TTTAttributedLabel.h>
-#import <AFNetworking.h>
+#import <TTTAttributedLabel/TTTAttributedLabel.h>  // 富文本 Label
+#import <AFNetworking.h>                           // 网络请求库
+#import <YYModel.h>                                // 快速转模型库
+#import <UIImageView+WebCache.h>                   // SDWebImage
+#import <UIButton+WebCache.h>                      // SDWebImage
 
 #endif /* PCPrefixHeader_pch */

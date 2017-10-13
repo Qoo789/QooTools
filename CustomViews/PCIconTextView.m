@@ -34,7 +34,7 @@
         self.textField = textView;
         if (show) {
             UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.pc_height - 0.5, self.pc_width, 0.5)];
-            line.backgroundColor = HEXCOLOR(0xdfdfdf); //COLOR_WITH_HEX(0xdfdfdf);//RGBGrayBackColor;
+            line.backgroundColor = HEXCOLOR(0xdfdfdf); //COLOR_WITH_HEX(0xdfdfdf);//PCGrayBackColor;
             [self addSubview:line];
         }
     }

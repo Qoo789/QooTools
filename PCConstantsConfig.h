@@ -9,23 +9,24 @@
 #ifndef PCConstantsConfig_h
 #define PCConstantsConfig_h
 
+
 // 系统版本
 // iOS 8以下
 #define isBeforeiOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
 // iOS 8以上
 #define isLateriOS8  ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 // iOS 9以下
-#define isBeforeiOS9 ([[[UIDevice currentDevice] systemVersion] floatValue] <= 9.0)
+#define isBeforeiOS9 ([[[UIDevice currentDevice] systemVersion] floatValue] < 9.0)
 // iOS 9以上
-#define isLateriOS9  ([[[UIDevice currentDevice] systemVersion] floatValue] > 9.0)
+#define isLateriOS9  ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
 // iOS 10及以上
 #define isLateriOS10 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0)
 
-// 分辨率
+
+// 分辨率及屏幕尺寸相关
 // 是否为高清屏
 #define isRetina ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&([UIScreen mainScreen].scale == 2.0))
 
-// 屏幕尺寸相关
 // 机器型号
 #define isiPhone4 ([UIScreen mainScreen].bounds.size.height == 480)
 #define isiPhone4or4sor5or5s ( [UIScreen mainScreen].bounds.size.width == 320)
@@ -34,9 +35,12 @@
 #define isiPhone6Plus ([UIScreen mainScreen].bounds.size.height == 736)
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
+
 // 当前主窗口
 #define kWindow [UIApplication sharedApplication].keyWindow
 
+
+// 页面尺寸相关
 // 主屏幕宽,高
 #define kScreenWidth   [[UIScreen mainScreen] bounds].size.width
 #define kScreenHeight  [[UIScreen mainScreen] bounds].size.height
@@ -53,35 +57,50 @@
 #define kCurrentTabHeight self.tabBarController.tabBar.frame.size.height
 
 // 导航栏高度(标准值)
-#define kNaviHeight   44 // 不加状态栏高度
-#define kNaviHeightAddStatusBar   64 // 加上状态栏高度
+#define kNaviHeight              44 // 不加状态栏高度
+#define kNaviHeightAddStatusBar  64 // 加上状态栏高度
 // tabbar高度(标准值)
-#define kTabbatHeight   49
+#define kTabbatHeight            49
 
 // 比例系数
 #define kWidthScale   kScreenWidth / 750
 #define kHeightScale  kScreenHeight / 1334
 
-// 常用颜色
-#define RGBMainColor  RGBCOLOR(254, 134, 16) // 主题色 #fe8610
-#define RGBHintLabelColor  RGBCOLOR(117, 117, 117) // 提示label的字体颜色 #757575
-#define RGBSeperatorColor  RGBCOLOR(236, 236, 236) // 首页模块分隔线颜色 #ececec
-#define RGBTitleColor      RGBCOLOR(33, 33, 33) // 主要title字体颜色 #212121
-#define RGBGrayBackColor   RGBCOLOR(247, 247, 248) // 浅灰色背景色 ##f7f7f8
-#define RGBBackGroundColor RGBCOLOR(243, 243, 245)
 
 // 快捷方法
 // RGB颜色
 #define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
-// 设置字体字号
-#define PCFont(size) [UIFont systemFontOfSize:size]
+// HEX颜色
+#define HEXCOLOR(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
+// 常用颜色
+#define PCTabBackColor         RGBCOLOR(255, 255, 255)
+#define PCTabTintColor         RGBCOLOR(0, 0, 0)
+#define PCNavBackColor         RGBCOLOR(255, 255, 255)
+#define PCNavTintColor         RGBCOLOR(0, 0, 0)
+#define PCMainColor            HEXCOLOR(0xff781f) // 主题色 #ff781f
+#define PCControllerBackColor  RGBCOLOR(255, 255, 255)
+#define PCCommonBtnTintColor   RGBCOLOR(255, 255, 255)
+// ---------------------------------------
+#define PCHintLabelColor       RGBCOLOR(117, 117, 117) // 提示label的字体颜色 #757575
+#define PCSeperatorColor       RGBCOLOR(236, 236, 236) // 首页模块分隔线颜色 #ececec
+#define PCTitleColor           RGBCOLOR(33, 33, 33) // 主要title字体颜色 #212121
+#define PCGrayBackColor        RGBCOLOR(247, 247, 248) // 浅灰色背景色 ##f7f7f8
+#define PCBackGroundColor      RGBCOLOR(243, 243, 245)
+
+// 设置系统字体字号
+#define SystemFont(size) [UIFont systemFontOfSize:size]
+// 设置粗体系统字体字号
+#define BoldFont(size) [UIFont boldSystemFontOfSize:size]
+// 常用字体
+#define PCCommonBtnFont SystemFont(17.0f)
+#define PCNavItemFont   SystemFont(32 * kWidthScale)
+
 // NSString 转 NSURL
 #define URL(_url_) [NSURL URLWithString:_url_]
 // 从路径获取图片
 #define PCGetImagePath(imageName) [UIImage imagePathed:imageName]
-// 16进制颜色设置
-#define HEXCOLOR(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
+
 
 // 本地化存储相关
 // 账号信息存储地址
@@ -95,12 +114,14 @@
 // 进入后台时间记录key
 #define kEnterBackgroundTimeKey @"enterBackgroundTime"
 
+
 // 第三方服务账号信息相关
 // 极光
 #define kJPushAppKey @""
 #define kJPushAppSecret @""
 
-// 判断空字符串
+
+// 判断非空和空字符串
 /**
  *  判断是否是空字符串 非空字符串 ＝ yes
  *  @param string
