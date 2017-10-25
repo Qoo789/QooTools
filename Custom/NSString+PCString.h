@@ -35,4 +35,22 @@
 // 检查验证码 规则是4位0-9数字
 - (BOOL)checkAuthCode;
 
+// 检查身份证号
+- (BOOL)checkIdentityNumber;
+
+// 保留小数点一定位数后不进位
+- (NSString *)notRoundingAfterPoint:(int)position;
+
+// 有千分符的数字方法
+- (NSString *)thousandSeparatorNumber;
+
+// 中间四位数字隐藏的手机号
+- (NSString *)hideCenterPhoneNumber;
+
+// 时间戳转时间(不带秒)
+- (NSString *)timeStampToStringWithoutSecond;
+
+// 时间戳转时间(带秒)
+- (NSString *)timeStampToString;
+
 @end

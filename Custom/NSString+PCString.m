@@ -102,21 +102,91 @@
     // 如果规则是6-16位数字和字母组成
     NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
-    if ([pred evaluateWithObject: self]) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return [pred evaluateWithObject: self];
 }
 
 - (BOOL)checkAuthCode {
     NSString *regex = @"^[0-9]{4}$";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
-    if ([pred evaluateWithObject:self]) {
-        return YES;
+    return [pred evaluateWithObject:self];
+}
+
+- (BOOL)checkIdentityNumber {
+    NSString *regex = @"^(d{14}|d{17})(d|[xX])$";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    return [pred evaluateWithObject:self];
+}
+
+- (NSString *)notRoundingAfterPoint:(int)position {
+    
+    double d = [self doubleValue];
+    
+    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position  raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    
+    NSDecimalNumber *ouncesDecimal;
+    NSDecimalNumber *roundedOunces;
+    
+    ouncesDecimal = [[NSDecimalNumber alloc] initWithDouble:d];
+    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
+    
+    // 整数的不带小数点
+    //    return [NSString stringWithFormat:@"%@",roundedOunces];
+    
+    NSString *string = [NSString stringWithFormat:@"%@", roundedOunces];
+    if ([string rangeOfString:@"."].length == 0) {
+        NSString *extra = @".";
+        for(int i = 0; i < position; i++) {
+            [extra stringByAppendingString:@"0"];
+        }
+        string = [string stringByAppendingString:extra];
     } else {
-        return NO;
+        // 先只考虑保留两位的情况
+        NSRange range = [string rangeOfString:@"."];
+        if (string.length - range.location - 1 == 1) {
+            // 保留了一位
+            string = [string stringByAppendingString:@"0"];
+        }
     }
+    return string; // 整数.00格式
+}
+
+- (NSString *)thousandSeparatorNumber {
+    
+    int amount = [self intValue];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterDecimalStyle;
+    
+    return [formatter stringFromNumber:[NSNumber numberWithInt:amount]];
+}
+
+- (NSString *)hideCenterPhoneNumber {
+    if ([self isMobileNumber]) {
+        NSString *fStr = [self substringToIndex:3];
+        NSString *bStr = [self substringFromIndex:7];
+        return [NSString stringWithFormat:@"%@****%@", fStr, bStr];
+    } else {
+        return self;
+    }
+}
+
+- (NSString *)timeStampToStringWithoutSecond {
+    
+    double timeSta = [self doubleValue];
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    timeFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    
+    NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:timeSta];
+    return [timeFormatter stringFromDate:date];
+}
+
+- (NSString *)timeStampToString {
+    
+    double timeSta = [self doubleValue];
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    timeFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    
+    NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:timeSta];
+    return  [timeFormatter stringFromDate:date];
 }
 
 @end
