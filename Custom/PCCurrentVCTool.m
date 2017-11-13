@@ -67,7 +67,7 @@
             // 调用系统 API 检查 Touch ID 是否可用
             NSError *requestError;
             NSInteger policy;
-            if (isLateriOS8 && isBeforeiOS9) {
+            if (isBeforeiOS9) { // 8之后, 9之前
                 policy = LAPolicyDeviceOwnerAuthenticationWithBiometrics;
             } else {
                 policy = LAPolicyDeviceOwnerAuthentication;
