@@ -23,6 +23,7 @@
 #import "UIView+PCView.h"
 #import "UIView+PCPosition.h"
 #import "UINavigationBar+PCNavBar.h"
+#import "UIScrollView+PCPageableScrollView.h"
 #import "PCCurrentVCTool.h"
 #import "PCHUDTool.h" // 好吧这个其实是对 MBProgressHUD 第三方的扩展=。= (我有强迫症
 
